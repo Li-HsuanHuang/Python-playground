@@ -3,21 +3,19 @@
 
 import numpy as np
 
-def statetimetally(ts,tseq):
-    stally = np.zeros(max(ts))
+def statetimetally(ts,times,N):
     if (len(np.diff(ts)<= 0) >= 1):
-        cumtseq = np.cumsum(tseq)
-        
+        cumtseq = np.cumsum(times)
+    cumtseq = times
     ind = np.where(np.diff(ts)!=0)[0]
     ts1 = np.append(ts[ind],ts[-1])
     tseq1 = np.append(cumtseq[ind],cumtseq[-1])
-    diffseq = np.diff(tseq1)
-    for (i in range(len(ts1))):
-        stally[ts1[i+1]] += diffseq[i]
-    
-   stally[ts1[0]] += tseq1[0]
-   return stally
-
+    stally = np.zeros(N)
+    diffseq = np.diff(cumtseq)
+    for i in range(len(ts)-1):
+        stally[ts[i+1]] += diffseq[i]
+    stally[ts[0]] += tseq1[0]
+    return stally
 
 # This function creates a transition matrix recording state transitions.
 # type: continuous- or discrete CTMC
@@ -33,7 +31,7 @@ def counttrans(ts,type='continuous'):
     else:
         break
     transmat = np.zeros((N,N))
-    for (i in 1:(len(ts)-1)):
+    for i in np.arange(1,len(ts)-1):
         transmat[ts[i],ts[i+1]] += 1
     return transmat
 
