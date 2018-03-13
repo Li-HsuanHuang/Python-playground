@@ -12,9 +12,9 @@ def statetimetally(ts,times,N):
     tseq1 = np.append(cumtseq[ind],cumtseq[-1])
     stally = np.zeros(N)
     diffseq = np.diff(cumtseq)
-    for i in range(len(ts)-1):
-        stally[ts[i+1]] += diffseq[i]
-    stally[ts[0]] += tseq1[0]
+    for i in range(len(ts1)-1):
+        stally[ts1[i+1]] += diffseq[i]
+    stally[ts1[0]] += tseq1[0]
     return stally
 
 # This function creates a transition matrix recording state transitions.
