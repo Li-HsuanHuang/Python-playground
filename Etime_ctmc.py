@@ -57,7 +57,7 @@ def expected_time(transratemat,ds):
     #transratemat = trainCTMC(ts,cumtseq,m)
     A = transratemat[-ds,-ds]
     M = np.linalg.inv(-A)
-    E = np.dot(M,np.ones(m-len(ds)))
+    E = np.sum(M,axis=1)
     return E
 
 
