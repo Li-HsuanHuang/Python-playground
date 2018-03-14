@@ -15,6 +15,7 @@ def statetimetally(ts,times):
         N = np.max(ts1) + 1
     else:
         N = np.max(ts1)
+    ts1 -= 1
     stally = np.zeros(N)
     diffseq = np.diff(tseq1)
     for i in range(len(ts1)-1):
@@ -43,7 +44,7 @@ def trainCTMC(ts,tseq,N):
     transmat = counttrans(ts,'continuous')
     timespent = statetimetally(ts,tseq)
     transratemat = transmat
-    for (i in range(transmat.shape[0])):
+    for i in range(transmat.shape[0]):
         transratemat[i,] = transratemat[i,]/timespent[i]
         transratemat[i,i] = - np.sum(transratemat[i,])
     return transratemat
@@ -52,10 +53,12 @@ def trainCTMC(ts,tseq,N):
 
 # Function for compute expected time spent before absorption
 # ds: dead-end state(s) (absorbing state(s))
+# Putting the absorbing states in top rows
 def expected_time(transratemat,ds):
     m = transratemat.shape[0]
+    n = len(ds)
     #transratemat = trainCTMC(ts,cumtseq,m)
-    A = transratemat[-ds,-ds]
+    A = transratemat[n:,n:]
     M = np.linalg.inv(-A)
     E = np.sum(M,axis=1)
     return E
